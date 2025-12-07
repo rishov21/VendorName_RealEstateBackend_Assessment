@@ -1,0 +1,171 @@
+{
+    "info": {
+        "name": "Real Estate Agent API",
+        "description": "API collection for Real Estate Agent Directory",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Create Agent",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Jane Smith\",\n  \"photo_url\": \"https://i.pravatar.cc/300?img=25\",\n  \"specialization\": \"Residential\",\n  \"location_city\": \"Portland\",\n  \"location_state\": \"OR\",\n  \"description\": \"Passionate about helping families find their perfect home in the Pacific Northwest.\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/agents",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents"
+                    ]
+                },
+                "description": "Create a new real estate agent"
+            }
+        },
+        {
+            "name": "Get All Agents",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/agents",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents"
+                    ]
+                },
+                "description": "Retrieve all agents in the directory"
+            }
+        },
+        {
+            "name": "Search Agents - By Name Only",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/agents/search?name=Sarah",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "name",
+                            "value": "Sarah"
+                        }
+                    ]
+                },
+                "description": "Search agents by name (partial match)"
+            }
+        },
+        {
+            "name": "Search Agents - By Name and City",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/agents/search?name=Michael&location_city=San Francisco",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "name",
+                            "value": "Michael"
+                        },
+                        {
+                            "key": "location_city",
+                            "value": "San Francisco"
+                        }
+                    ]
+                },
+                "description": "Search agents by name and city"
+            }
+        },
+        {
+            "name": "Search Agents - All Filters",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/agents/search?name=Emily&location_city=Los Angeles&specialization=Luxury",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "name",
+                            "value": "Emily"
+                        },
+                        {
+                            "key": "location_city",
+                            "value": "Los Angeles"
+                        },
+                        {
+                            "key": "specialization",
+                            "value": "Luxury"
+                        }
+                    ]
+                },
+                "description": "Search agents with all available filters"
+            }
+        },
+        {
+            "name": "Search Agents - By Specialization",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/agents/search?name=&specialization=Commercial",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "agents",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "name",
+                            "value": ""
+                        },
+                        {
+                            "key": "specialization",
+                            "value": "Commercial"
+                        }
+                    ]
+                },
+                "description": "Search by specialization (note: name is still required but can be empty)"
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:5000",
+            "type": "string"
+        }
+    ]
+}

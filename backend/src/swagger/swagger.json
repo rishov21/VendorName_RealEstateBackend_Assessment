@@ -1,0 +1,330 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Real Estate Agent Directory API",
+        "version": "1.0.0",
+        "description": "REST API for managing and searching real estate agents",
+        "contact": {
+            "name": "API Support"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000",
+            "description": "Development server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Agents",
+            "description": "Agent management endpoints"
+        }
+    ],
+    "paths": {
+        "/agents": {
+            "post": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Create a new agent",
+                "description": "Add a new real estate agent to the directory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAgentRequest"
+                            },
+                            "example": {
+                                "name": "John Doe",
+                                "photo_url": "https://example.com/photo.jpg",
+                                "specialization": "Residential",
+                                "location_city": "New York",
+                                "location_state": "NY",
+                                "description": "Experienced real estate agent specializing in residential properties"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Agent created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Get all agents",
+                "description": "Retrieve a list of all real estate agents",
+                "responses": {
+                    "200": {
+                        "description": "List of agents",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentListResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/agents/search": {
+            "get": {
+                "tags": [
+                    "Agents"
+                ],
+                "summary": "Search agents",
+                "description": "Search for agents by name, location, and specialization",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Agent name to search for (partial match, case-insensitive)",
+                        "example": "John"
+                    },
+                    {
+                        "name": "location_city",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter by city (exact match, case-insensitive)",
+                        "example": "New York"
+                    },
+                    {
+                        "name": "specialization",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter by specialization (exact match, case-insensitive)",
+                        "example": "Residential"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error - name parameter is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Agent": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Agent ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Agent name"
+                    },
+                    "photo_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Agent photo URL"
+                    },
+                    "specialization": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Agent specialization (e.g., Residential, Commercial, Luxury)"
+                    },
+                    "location_city": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "City where agent operates"
+                    },
+                    "location_state": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "State where agent operates"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Agent description and bio"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when agent was created"
+                    }
+                }
+            },
+            "CreateAgentRequest": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Agent name",
+                        "minLength": 1,
+                        "maxLength": 255
+                    },
+                    "photo_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Agent photo URL"
+                    },
+                    "specialization": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Agent specialization"
+                    },
+                    "location_city": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "description": "City"
+                    },
+                    "location_state": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "description": "State"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Agent description"
+                    }
+                }
+            },
+            "AgentResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Agent"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Agent created successfully"
+                    }
+                }
+            },
+            "AgentListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Agent"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "description": "Number of agents returned"
+                    }
+                }
+            },
+            "SearchResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Agent"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "description": "Number of matching agents"
+                    },
+                    "filters": {
+                        "type": "object",
+                        "description": "Applied search filters"
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "Error type"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Error message"
+                    },
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
