@@ -10,8 +10,8 @@
     },
     "servers": [
         {
-            "url": "http://localhost:5000",
-            "description": "Development server"
+            "url": "https://vendorname-realestatebackend-assessment.onrender.com",
+            "description": "Production server"
         }
     ],
     "tags": [
