@@ -8,6 +8,7 @@ export default function AddAgentModal({
     error,
     success
 }) {
+    
     if (!isOpen) return null;
 
     return (
